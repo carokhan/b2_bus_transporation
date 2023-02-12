@@ -78,6 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
       } else {
         setState(() {
           _display = Icons.dangerous;
+          _display = Icons.error;
           _color = Colors.red;
           _message = "An error occurred, please try again.";
         });
