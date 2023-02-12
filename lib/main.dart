@@ -57,14 +57,20 @@ class _MyHomePageState extends State<MyHomePage> {
   Color _color = Colors.black;
   String _message = "Press to scan";
 
-  bool _testNFC() {
+  Future _testNFC() async {
+    await Future.delayed(Duration(seconds: 1));
+    ;
     return true;
   }
 
-  void _run() {
+  void _run() async {
     if (!_isRunning) {
       _isRunning = true;
-      if (_testNFC()) {
+      setState(() {
+        _display = Icons.hourglass_empty;
+        _message = "";
+      });
+      if (await _testNFC()) {
         setState(() {
           // This call to setState tells the Flutter framework that something has
           // changed in this State, which causes it to rerun the build method below
