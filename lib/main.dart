@@ -1,4 +1,7 @@
+//import 'dart:js_util';
+
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Edulog Student App',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -22,9 +25,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Edulog Student App'),
     );
   }
 }
@@ -49,16 +52,45 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  bool _isRunning = false;
+  IconData _display = Icons.sensors;
+  Color _color = Colors.black;
+  String _message = "Press to scan";
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  bool _testNFC() {
+    return true;
+  }
+
+  void _run() {
+    if (!_isRunning) {
+      _isRunning = true;
+      if (_testNFC()) {
+        setState(() {
+          // This call to setState tells the Flutter framework that something has
+          // changed in this State, which causes it to rerun the build method below
+          // so that the display can reflect the updated values. If we changed
+          // _counter without calling setState(), then the build method would not be
+          // called again, and so nothing would appear to happen.
+          _display = Icons.check;
+          _color = Colors.green;
+          _message = "Success!";
+        });
+      } else {
+        setState(() {
+          _display = Icons.error;
+          _color = Colors.red;
+          _message = "An error occurred, please try again.";
+        });
+      }
+      Future.delayed(const Duration(milliseconds: 2000), () {
+        setState(() {
+          _display = Icons.sensors;
+          _color = Colors.black;
+          _message = "Press to scan";
+        });
+        _isRunning = false;
+      });
+    }
   }
 
   @override
@@ -73,6 +105,14 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
+        leading: IconButton(
+          style: TextButton.styleFrom(
+            textStyle: const TextStyle(fontSize: 20),
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          ),
+          onPressed: () {},
+          icon: const Icon(Icons.menu),
+        ),
         title: Text(widget.title),
       ),
       body: Center(
@@ -95,21 +135,20 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            IconButton(
+              onPressed: _run,
+              icon: Icon(_display),
+              iconSize: 140,
+              color: _color,
             ),
             Text(
-              '$_counter',
+              textAlign: TextAlign.center,
+              _message,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
