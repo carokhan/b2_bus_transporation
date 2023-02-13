@@ -43,7 +43,6 @@ class _MyHomePageState extends State<MyHomePage> {
   //Dummy function to be replaced by NFC code
   Future _testNFC() async {
     await Future.delayed(Duration(seconds: 1));
-    ;
     return true;
   }
   //Button animations
