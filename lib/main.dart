@@ -59,7 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future _testNFC() async {
     await Future.delayed(Duration(seconds: 1));
-    ;
     return true;
   }
 
