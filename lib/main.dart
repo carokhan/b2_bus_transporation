@@ -1,5 +1,7 @@
 //import 'dart:js_util';
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:nfc_manager/nfc_manager.dart';
@@ -40,16 +42,26 @@ class _MyHomePageState extends State<MyHomePage> {
   IconData _display = Icons.sensors;
   Color _color = Colors.black;
   String _message = "Press to scan";
+  String _error = "";
 
   //Dummy function to be replaced by NFC code
-  Future _testNFC() async {
-    await Future.delayed(Duration(seconds: 1));
-    NfcManager.instance.startSession(
-      onDiscovered: (NfcTag tag) async {
-        print('Found device with a tag of... $tag');
+  Future<bool> _testNFC() async {
+    NfcManager.instance.stopSession();
+    Completer completer = new Completer();
+    if (!(await NfcManager.instance.isAvailable())) return Future.value(false);
+    await NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
+      completer.complete(Future.value(true));
+    }, onError: (NfcError error) async {
+      setState(() {
+        _error = error.toString();
+      });
+      completer.complete(Future.value(false));
+    }).then(
+      (value) {
+        NfcManager.instance.stopSession();
       },
     );
-    return true;
+    return _testNFC();
   }
 
   //Button animations
@@ -62,7 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
         _display = Icons.hourglass_empty;
         _message = "";
       });
-      if (await _testNFC()) {
+      if (await _testNFC().timeout(Duration(seconds: 5),
+          onTimeout: () => Future.value(false))) {
         //await bool return from NFC and evaluate
         setState(() {
           //NFC Success
@@ -127,6 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
               style:
                   Theme.of(context).textTheme.headlineMedium, //changable text
             ),
+            Text(_error)
           ],
         ),
       ),
