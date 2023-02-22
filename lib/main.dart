@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:nfc_manager/nfc_manager.dart';
 
 void main() {
@@ -37,7 +36,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   bool _isRunning = false;
   IconData _display = Icons.sensors;
   Color _color = Colors.black;
@@ -48,7 +46,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<bool> _testNFC() async {
     NfcManager.instance.stopSession();
     Completer completer = new Completer();
-    if (!(await NfcManager.instance.isAvailable())) return Future.value(false);
     await NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       completer.complete(Future.value(true));
     }, onError: (NfcError error) async {
@@ -74,7 +71,14 @@ class _MyHomePageState extends State<MyHomePage> {
         _display = Icons.hourglass_empty;
         _message = "";
       });
-      if (await _testNFC().timeout(Duration(seconds: 5),
+      if (!await NfcManager.instance.isAvailable()) {
+        setState(() {
+          //No NFC compatibility
+          _display = Icons.sensors_off;
+          _color = Colors.red;
+          _message = "Error accessing NFC systems.";
+        });
+      } else if (await _testNFC().timeout(const Duration(seconds: 5),
           onTimeout: () => Future.value(false))) {
         //await bool return from NFC and evaluate
         setState(() {
@@ -140,7 +144,11 @@ class _MyHomePageState extends State<MyHomePage> {
               style:
                   Theme.of(context).textTheme.headlineMedium, //changable text
             ),
-            Text(_error)
+            Text(
+              _error,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineMedium,
+            )
           ],
         ),
       ),
