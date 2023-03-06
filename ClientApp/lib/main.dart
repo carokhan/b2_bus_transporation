@@ -37,12 +37,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool _isRunning = false;
-  IconData _display = Icons.sensors;
-  Color _color = Colors.black;
-  String _message = "Press to scan";
-  String _error = "";
+  IconData _nfcIconDesplay = Icons.sensors;
+  Color _nfcIconColor = Colors.black;
+  String _nfcMessage = "Press to scan";
+  String _error = ""; //for debug only
+  String _loginTooltip = "Login";
+  IconData _loginIcon = Icons.login;
 
-  //Dummy function to be replaced by NFC code
+  //NFC code
   Future<bool> _testNFC() async {
     NfcManager.instance.stopSession();
     Completer completer = new Completer();
@@ -68,41 +70,62 @@ class _MyHomePageState extends State<MyHomePage> {
       _isRunning = true;
       setState(() {
         //wait symbol
-        _display = Icons.hourglass_empty;
-        _message = "";
+        _nfcIconDesplay = Icons.hourglass_empty;
+        _nfcMessage = "";
       });
       if (!await NfcManager.instance.isAvailable()) {
         setState(() {
           //No NFC compatibility
-          _display = Icons.sensors_off;
-          _color = Colors.red;
-          _message = "Error accessing NFC systems.";
+          _nfcIconDesplay = Icons.sensors_off;
+          _nfcIconColor = Colors.red;
+          _nfcMessage = "Error accessing NFC systems.";
         });
       } else if (await _testNFC().timeout(const Duration(seconds: 5),
           onTimeout: () => Future.value(false))) {
         //await bool return from NFC and evaluate
         setState(() {
           //NFC Success
-          _display = Icons.check;
-          _color = Colors.green;
-          _message = "Success!";
+          _nfcIconDesplay = Icons.check;
+          _nfcIconColor = Colors.green;
+          _nfcMessage = "Success!";
         });
       } else {
         setState(() {
           //NFC Error
-          _display = Icons.dangerous;
-          _color = Colors.red;
-          _message = "An error occurred, please try again.";
+          _nfcIconDesplay = Icons.dangerous;
+          _nfcIconColor = Colors.red;
+          _nfcMessage = "An error occurred, please try again.";
         });
       }
       Future.delayed(const Duration(milliseconds: 2000), () {
         setState(() {
-          _display = Icons.sensors;
-          _color = Colors.black;
-          _message = "Press to scan";
+          _nfcIconDesplay = Icons.sensors;
+          _nfcIconColor = Colors.black;
+          _nfcMessage = "Press to scan";
         });
         _isRunning = false;
       });
+    }
+  }
+
+  // replace with login function that returns true for successful login or false otherwise
+  Future<bool> _runLogin() {
+    return Future.value(true);
+  }
+
+  //login function
+  void _login() async {
+    if (_loginIcon == Icons.login) {
+      //replace with a better login check after login systems are implemented
+      if (await _runLogin()) {
+        _loginTooltip = "Logout";
+        _loginIcon = Icons.logout;
+        setState(() {});
+      }
+    } else {
+      _loginTooltip = "Login";
+      _loginIcon = Icons.login;
+      setState(() {});
     }
   }
 
@@ -113,18 +136,19 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         //Top Bar of the app
         leading: IconButton(
-          //menyu button
+          //menu button
           style: TextButton.styleFrom(
             textStyle: const TextStyle(fontSize: 20),
             foregroundColor: Theme.of(context).colorScheme.onPrimary,
           ),
-          onPressed: () {},
-          icon: const Icon(Icons.menu),
+          onPressed: _login,
+          icon: Icon(_loginIcon),
+          tooltip: _loginTooltip,
         ),
         title: Text(widget.title), //App title
       ),
       body: Center(
-        //center Horozontaly
+        //center horozontaly
         child: Column(
           //stack stuff in column
           mainAxisAlignment:
@@ -133,14 +157,14 @@ class _MyHomePageState extends State<MyHomePage> {
             IconButton(
               //Run nfc stuff button
               onPressed: _run,
-              icon: Icon(_display), //changable icon
+              icon: Icon(_nfcIconDesplay), //changable icon
               iconSize: 140,
-              color: _color,
+              color: _nfcIconColor,
             ),
             Text(
               // message underneath button
               textAlign: TextAlign.center,
-              _message,
+              _nfcMessage,
               style:
                   Theme.of(context).textTheme.headlineMedium, //changable text
             ),
