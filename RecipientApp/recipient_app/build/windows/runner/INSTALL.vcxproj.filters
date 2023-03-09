@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\jackt\Documents\GitHub\hcps-bus-transportation\RecipientApp\recipient_app\build\windows\CMakeFiles\befd45de0ea6a98bdbcfe343387699dc\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{B1C16320-06C2-3C90-AF56-E6195CEC9F0B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

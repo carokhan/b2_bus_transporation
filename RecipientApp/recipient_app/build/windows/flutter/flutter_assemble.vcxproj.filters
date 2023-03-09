@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\jackt\Documents\GitHub\hcps-bus-transportation\RecipientApp\recipient_app\build\windows\CMakeFiles\3c2cab201923f1c70b44e6b3cab701be\flutter_windows.dll.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\jackt\Documents\GitHub\hcps-bus-transportation\RecipientApp\recipient_app\build\windows\CMakeFiles\1dc73aaecb964a2dcebb2a3ec619d304\flutter_assemble.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\jackt\Documents\GitHub\hcps-bus-transportation\RecipientApp\recipient_app\windows\flutter\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\jackt\Documents\GitHub\hcps-bus-transportation\RecipientApp\recipient_app\build\windows\flutter\CMakeFiles\flutter_assemble" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{B1C16320-06C2-3C90-AF56-E6195CEC9F0B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
