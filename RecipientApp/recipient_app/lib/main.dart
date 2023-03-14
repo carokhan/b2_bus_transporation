@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
         var ndef = Ndef.from(tag);
         var record = ndef?.cachedMessage?.records.first;
         var decodedPayload = ascii.decode(record!.payload);
-        data = decodedPayload.substring(decodedPayload.indexOf('myprefix'));
+        data = decodedPayload;
         nfcRead();
       },
     ));
