@@ -1,5 +1,7 @@
 //import 'dart:js_util';
 
+import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
