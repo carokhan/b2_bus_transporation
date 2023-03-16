@@ -1,11 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-import 'dart:async';
-import 'dart:convert';
-import 'dart:js_util';
-
 import 'package:flutter/material.dart';
-import 'package:nfc_manager/nfc_manager.dart';
+import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -56,19 +51,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String data = "No NFC Data";
-
-  void nfcRead() async {
-    var isAvailable = await NfcManager.instance.isAvailable();
-    unawaited(NfcManager.instance.startSession(
-      onDiscovered: (NfcTag tag) async {
-        var ndef = Ndef.from(tag);
-        var record = ndef?.cachedMessage?.records.first;
-        var decodedPayload = ascii.decode(record!.payload);
-        data = decodedPayload;
-        nfcRead();
-      },
-    ));
-  }
 
   @override
   Widget build(BuildContext context) {
