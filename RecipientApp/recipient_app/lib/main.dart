@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'dart:js_util';
 
 import 'package:flutter/material.dart';
-import 'package:nfc_manager/nfc_manager.dart';
 
 void main() {
   runApp(const MyApp());
