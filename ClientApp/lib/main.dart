@@ -5,7 +5,6 @@ import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:nfc_manager/nfc_manager.dart';
 
 void main() {
   runApp(const MyApp());
@@ -47,23 +46,6 @@ class _MyHomePageState extends State<MyHomePage> {
   IconData _loginIcon = Icons.login;
 
   //NFC code
-  Future<bool> _testNFC() async {
-    NfcManager.instance.stopSession();
-    Completer completer = new Completer();
-    await NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      completer.complete(Future.value(true));
-    }, onError: (NfcError error) async {
-      setState(() {
-        _error = error.toString();
-      });
-      completer.complete(Future.value(false));
-    }).then(
-      (value) {
-        NfcManager.instance.stopSession();
-      },
-    );
-    return _testNFC();
-  }
 
   //Button animations
   void _run() async {
@@ -75,15 +57,21 @@ class _MyHomePageState extends State<MyHomePage> {
         _nfcIconDesplay = Icons.hourglass_empty;
         _nfcMessage = "";
       });
-      if (!await NfcManager.instance.isAvailable()) {
+      var availability = await FlutterNfcKit.nfcAvailability;
+      if (availability != NFCAvailability.available) {
         setState(() {
           //No NFC compatibility
           _nfcIconDesplay = Icons.sensors_off;
           _nfcIconColor = Colors.red;
           _nfcMessage = "Error accessing NFC systems.";
         });
-      } else if (await _testNFC().timeout(const Duration(seconds: 5),
-          onTimeout: () => Future.value(false))) {
+        return;
+      }
+      var tag = await FlutterNfcKit.poll(
+          timeout: Duration(seconds: 10),
+          iosMultipleTagMessage: "Multiple tags found!",
+          iosAlertMessage: "Scan your tag");
+      if (tag.type == NFCTagType.iso7816) {
         //await bool return from NFC and evaluate
         setState(() {
           //NFC Success
@@ -96,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
           //NFC Error
           _nfcIconDesplay = Icons.dangerous;
           _nfcIconColor = Colors.red;
-          _nfcMessage = "An error occurred, please try again.";
+          _nfcMessage = tag.toString() + "An error occurred, please try again.";
         });
       }
       Future.delayed(const Duration(milliseconds: 2000), () {
