@@ -21,6 +21,11 @@ public final class GeneratedPluginRegistrant {
       Log.e(TAG, "Error registering plugin flutter_nfc_kit, im.nfc.flutter_nfc_kit.FlutterNfcKitPlugin", e);
     }
     try {
+      flutterEngine.getPlugins().add(new io.flutter.plugins.googlesignin.GoogleSignInPlugin());
+    } catch(Exception e) {
+      Log.e(TAG, "Error registering plugin google_sign_in_android, io.flutter.plugins.googlesignin.GoogleSignInPlugin", e);
+    }
+    try {
       flutterEngine.getPlugins().add(new io.flutter.plugins.nfcmanager.NfcManagerPlugin());
     } catch(Exception e) {
       Log.e(TAG, "Error registering plugin nfc_manager, io.flutter.plugins.nfcmanager.NfcManagerPlugin", e);
