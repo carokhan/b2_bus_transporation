@@ -6,6 +6,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'package:google_sign_in/google_sign_in.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -100,7 +102,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // replace with login function that returns true for successful login or false otherwise
   Future<bool> _runLogin() {
-    return Future.value(true);
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
+    bool _isLoggedIn = false;
+    late GoogleSignInAccount _userObj;
+    _googleSignIn.signIn().then((userData) {
+                setState(() {
+                  _isLoggedIn = true;
+                  _userObj = userData!;
+                });
+              }).catchError((e) {
+                print(e);
+              });
+    return Future.value(_isLoggedIn);
   }
 
   //login function
