@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
               }).catchError((e) {
                 print(e);
               });
-    return Future.value(true);
+    return Future.value(_isLoggedIn);
   }
 
   //login function
