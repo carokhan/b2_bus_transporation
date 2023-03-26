@@ -67,7 +67,15 @@ class _MyHomePageState extends State<MyHomePage> {
           _nfcIconColor = Colors.red;
           _nfcMessage = "Error accessing NFC systems.";
         });
+        Future.delayed(const Duration(milliseconds: 2000), () {
+        setState(() {
+          _nfcIconDesplay = Icons.sensors;
+          _nfcIconColor = Colors.black;
+          _nfcMessage = "Press to scan";
+        });
+        _isRunning = false;
         return;
+      });
       }
       var tag = await FlutterNfcKit.poll(
           timeout: Duration(seconds: 10),
@@ -86,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
           //NFC Error
           _nfcIconDesplay = Icons.dangerous;
           _nfcIconColor = Colors.red;
-          _nfcMessage = tag.toString() + "An error occurred, please try again.";
+          _nfcMessage = "An error occurred, please try again.";
         });
       }
       Future.delayed(const Duration(milliseconds: 2000), () {
