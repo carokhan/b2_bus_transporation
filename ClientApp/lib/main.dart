@@ -7,6 +7,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:nfc_manager/nfc_manager.dart';
+import 'package:ndef/ndef.dart' as ndef;
 
 void main() {
   runApp(const MyApp());
@@ -73,7 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
           timeout: Duration(seconds: 10),
           iosMultipleTagMessage: "Multiple tags found!",
           iosAlertMessage: "Scan your tag");
-      if (tag.type == NFCTagType.iso7816) {
+      if (tag.ndefWritable!) {
+        await FlutterNfcKit.writeNDEFRecords(
+            [new ndef.TextRecord(text: "Data")]);
         //await bool return from NFC and evaluate
         setState(() {
           //NFC Success
@@ -106,13 +110,13 @@ class _MyHomePageState extends State<MyHomePage> {
     bool _isLoggedIn = false;
     late GoogleSignInAccount _userObj;
     _googleSignIn.signIn().then((userData) {
-                setState(() {
-                  _isLoggedIn = true;
-                  _userObj = userData!;
-                });
-              }).catchError((e) {
-                print(e);
-              });
+      setState(() {
+        _isLoggedIn = true;
+        _userObj = userData!;
+      });
+    }).catchError((e) {
+      print(e);
+    });
     return Future.value(_isLoggedIn);
   }
 
