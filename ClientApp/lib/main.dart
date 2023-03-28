@@ -122,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
           _loginIcon = Icons.logout;
         });
       }).catchError((e) {
-        print(e);
+        print("ERROR" + e.toString());
       });
     }
   }
