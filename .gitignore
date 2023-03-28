@@ -48,3 +48,4 @@ app.*.map.json
 
 /*/window/flutter
 */android/.gradle
+ClientApp/android/.gradle
