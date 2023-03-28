@@ -47,6 +47,6 @@ app.*.map.json
 /android/app/release
 
 /*/window/flutter
-*/android/.gradle
-ClientApp/android/.gradle/*
+/*/android/.gradle
+/ClientApp/android/.gradle/*
 ClientApp/android/.gradle/7.4.2/executionHistory/executionHistory.bin
