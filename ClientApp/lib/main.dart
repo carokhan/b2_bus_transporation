@@ -68,14 +68,14 @@ class _MyHomePageState extends State<MyHomePage> {
           _nfcMessage = "Error accessing NFC systems.";
         });
         Future.delayed(const Duration(milliseconds: 2000), () {
-        setState(() {
-          _nfcIconDesplay = Icons.sensors;
-          _nfcIconColor = Colors.black;
-          _nfcMessage = "Press to scan";
+          setState(() {
+            _nfcIconDesplay = Icons.sensors;
+            _nfcIconColor = Colors.black;
+            _nfcMessage = "Press to scan";
+          });
+          _isRunning = false;
+          return;
         });
-        _isRunning = false;
-        return;
-      });
       }
       var tag = await FlutterNfcKit.poll(
           timeout: Duration(seconds: 10),
@@ -109,34 +109,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // replace with login function that returns true for successful login or false otherwise
-  Future<bool> _runLogin() {
-    final GoogleSignIn _googleSignIn = GoogleSignIn();
-    bool _isLoggedIn = false;
-    late GoogleSignInAccount _userObj;
-    _googleSignIn.signIn().then((userData) {
-                setState(() {
-                  _isLoggedIn = true;
-                  _userObj = userData!;
-                });
-              }).catchError((e) {
-                print(e);
-              });
-    return Future.value(_isLoggedIn);
-  }
 
   //login function
   void _login() async {
     if (_loginIcon == Icons.login) {
-      //replace with a better login check after login systems are implemented
-      if (await _runLogin()) {
-        _loginTooltip = "Logout";
-        _loginIcon = Icons.logout;
-        setState(() {});
-      }
-    } else {
-      _loginTooltip = "Login";
-      _loginIcon = Icons.login;
-      setState(() {});
+      final GoogleSignIn _googleSignIn = GoogleSignIn();
+      bool _isLoggedIn = false;
+      //late GoogleSignInAccount _userObj;
+      _googleSignIn.signIn().then((userData) {
+        setState(() {
+          _loginTooltip = "Logout";
+          _loginIcon = Icons.logout;
+        });
+      }).catchError((e) {
+        print(e);
+      });
     }
   }
 
