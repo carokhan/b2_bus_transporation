@@ -71,28 +71,25 @@ class _MyHomePageState extends State<MyHomePage> {
         });
         return;
       }
+      setState(() {
+        _nfcMessage = "Scanning...";
+      });
       var tag = await FlutterNfcKit.poll(
-          timeout: Duration(seconds: 10),
-          iosMultipleTagMessage: "Multiple tags found!",
-          iosAlertMessage: "Scan your tag");
-      if (tag.ndefWritable!) {
-        await FlutterNfcKit.writeNDEFRecords(
-            [new ndef.TextRecord(text: "Data")]);
-        //await bool return from NFC and evaluate
-        setState(() {
-          //NFC Success
-          _nfcIconDesplay = Icons.check;
-          _nfcIconColor = Colors.green;
-          _nfcMessage = "Success!";
-        });
-      } else {
-        setState(() {
-          //NFC Error
-          _nfcIconDesplay = Icons.dangerous;
-          _nfcIconColor = Colors.red;
-          _nfcMessage = tag.toString() + "An error occurred, please try again.";
-        });
-      }
+          timeout: Duration(seconds: 20),
+          androidPlatformSound: true,
+          androidCheckNDEF: true,
+          iosAlertMessage: "Hold your phone close to the tablet",
+          iosMultipleTagMessage: "Please try again",
+          readIso14443A: true,
+          readIso14443B: true,
+          readIso15693: true,
+          readIso18092: true);
+      setState(() {
+        //NFC Success
+        _nfcIconDesplay = Icons.check;
+        _nfcIconColor = Colors.green;
+        _nfcMessage = tag.toString();
+      });
       Future.delayed(const Duration(milliseconds: 2000), () {
         setState(() {
           _nfcIconDesplay = Icons.sensors;
