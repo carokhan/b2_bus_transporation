@@ -56,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var availability = await FlutterNfcKit.nfcAvailability;
     if (availability != NFCAvailability.available) {
       data = "An error occured";
+      setState(() {});
     }
     var tag = await FlutterNfcKit.poll(
         timeout: Duration(seconds: 10),
@@ -78,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       }
     }
+    await FlutterNfcKit.finish();
   }
 
 // timeout only works on Android, while the latter two messages are only for iOS
@@ -116,9 +118,11 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              data,
+            TextButton(
+              onPressed: readNfc,
+              child: Text(data),
             ),
+            Text("Hi")
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
