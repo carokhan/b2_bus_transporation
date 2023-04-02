@@ -118,12 +118,13 @@ class _MyHomePageState extends State<MyHomePage> {
       bool _isLoggedIn = false;
       //late GoogleSignInAccount _userObj;
       _googleSignIn.signIn().then((userData) {
+        print("THEN!!! " + userData.toString());
         setState(() {
           _loginTooltip = "Logout";
           _loginIcon = Icons.logout;
         });
       }).catchError((e) {
-        print("ERROR" + e.toString());
+        print("ERROR!!!!! " + e.toString());
       });
     }
   }
