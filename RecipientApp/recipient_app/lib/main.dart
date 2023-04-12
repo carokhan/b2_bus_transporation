@@ -53,33 +53,35 @@ class _MyHomePageState extends State<MyHomePage> {
   String data = "No NFC Data";
 
   void readNfc() async {
-    var availability = await FlutterNfcKit.nfcAvailability;
-    if (availability != NFCAvailability.available) {
-      data = "An error occured";
-      setState(() {});
-    }
-    var tag = await FlutterNfcKit.poll(
-        timeout: Duration(seconds: 10),
-        iosMultipleTagMessage: "Multiple tags found!",
-        iosAlertMessage: "Scan your tag");
+    while (true) {
+      var availability = await FlutterNfcKit.nfcAvailability;
+      if (availability != NFCAvailability.available) {
+        data = "An error occured";
+        setState(() {});
+      }
+      var tag = await FlutterNfcKit.poll(
+          timeout: Duration(seconds: 10),
+          iosMultipleTagMessage: "Multiple tags found!",
+          iosAlertMessage: "Scan your tag");
 
-    if (tag.type == NFCTagType.iso7816) {
-      var result = await FlutterNfcKit.transceive("00B0950000",
-          timeout: Duration(
-              seconds:
-                  5)); // timeout is still Android-only, persist until next change
-      setState(() {
-        data = result;
-      });
-    }
-    if (tag.ndefAvailable!) {
-      for (var record in await FlutterNfcKit.readNDEFRecords(cached: false)) {
+      if (tag.type == NFCTagType.iso7816) {
+        var result = await FlutterNfcKit.transceive("00B0950000",
+            timeout: Duration(
+                seconds:
+                    5)); // timeout is still Android-only, persist until next change
         setState(() {
-          data = record.toString();
+          data = result;
         });
       }
+      if (tag.ndefAvailable!) {
+        for (var record in await FlutterNfcKit.readNDEFRecords(cached: false)) {
+          setState(() {
+            data = record.toString();
+          });
+        }
+      }
+      await FlutterNfcKit.finish();
     }
-    await FlutterNfcKit.finish();
   }
 
 // timeout only works on Android, while the latter two messages are only for iOS
