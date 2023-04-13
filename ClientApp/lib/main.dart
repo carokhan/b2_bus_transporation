@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Edulog Student App',
+      title: 'Edulog Student App', //App Title
       theme: ThemeData(
         //theme colors
         primarySwatch: Colors.teal,
@@ -41,11 +41,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  //initalise necessary global varables
   bool _isRunning = false;
   IconData _nfcIconDesplay = Icons.sensors;
   Color _nfcIconColor = Colors.black;
   String _nfcMessage = "Press to scan";
-  String _error = ""; //for debug only
   String _loginTooltip = "Login";
   IconData _loginIcon = Icons.login;
 
@@ -63,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
       });
       var availability = await FlutterNfcKit.nfcAvailability;
       if (availability != NFCAvailability.available) {
+        //Is NFC Available?
         setState(() {
           //No NFC compatibility
           _nfcIconDesplay = Icons.sensors_off;
@@ -70,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
           _nfcMessage = "Error accessing NFC systems.";
         });
         Future.delayed(const Duration(milliseconds: 2000), () {
+          //reset to default state
           setState(() {
             _nfcIconDesplay = Icons.sensors;
             _nfcIconColor = Colors.black;
@@ -82,16 +84,20 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         _nfcMessage = "Scanning...";
       });
+      //Start NFC Connection
       var tag = await FlutterNfcKit.poll(
-          timeout: Duration(seconds: 20),
-          androidPlatformSound: true,
-          androidCheckNDEF: true,
-          iosAlertMessage: "Hold your phone close to the tablet",
-          iosMultipleTagMessage: "Please try again",
-          readIso14443A: true,
-          readIso14443B: true,
-          readIso15693: true,
-          readIso18092: true);
+              timeout: Duration(seconds: 20),
+              androidPlatformSound: true,
+              androidCheckNDEF: true,
+              iosAlertMessage: "Hold your phone close to the tablet",
+              iosMultipleTagMessage: "Please try again",
+              readIso14443A: true,
+              readIso14443B: true,
+              readIso15693: true,
+              readIso18092: true)
+          .then(
+        (returned) {},
+      );
       setState(() {
         //NFC Success
         _nfcIconDesplay = Icons.check;
@@ -119,8 +125,10 @@ class _MyHomePageState extends State<MyHomePage> {
       //late GoogleSignInAccount _userObj;
       try {
         await _googleSignIn.signIn().then((userData) {
+          //Login Success
           print("THEN!!! " + userData.toString());
           setState(() {
+            //change login button symbol
             _loginTooltip = "Logout";
             _loginIcon = Icons.logout;
           });
@@ -128,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
           print("ERROR!!!!! " + e.toString());
         });
       } catch (e) {
-        print("ERR!!!"+e.toString());
+        print("ERR!!!" + e.toString());
       }
     }
   }
@@ -172,11 +180,6 @@ class _MyHomePageState extends State<MyHomePage> {
               style:
                   Theme.of(context).textTheme.headlineMedium, //changable text
             ),
-            Text(
-              _error,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headlineMedium,
-            )
           ],
         ),
       ),
