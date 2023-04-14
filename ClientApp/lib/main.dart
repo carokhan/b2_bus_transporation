@@ -99,13 +99,14 @@ class _MyHomePageState extends State<MyHomePage> {
         (returned) {},
       );
       setState(() {
-        //NFC Success
+        //NFC Success visual
         _nfcIconDesplay = Icons.check;
         _nfcIconColor = Colors.green;
         _nfcMessage = tag.toString();
       });
       Future.delayed(const Duration(milliseconds: 2000), () {
         setState(() {
+          //Reset visual
           _nfcIconDesplay = Icons.sensors;
           _nfcIconColor = Colors.black;
           _nfcMessage = "Press to scan";
