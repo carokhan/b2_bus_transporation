@@ -85,7 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
         _nfcMessage = "Scanning...";
       });
       //Start NFC Connection
+      //Scanning for tags with poll method
       var tag = await FlutterNfcKit.poll(
+              //Timeout does not work for some reason
               timeout: Duration(seconds: 20),
               androidPlatformSound: true,
               androidCheckNDEF: true,
@@ -96,6 +98,17 @@ class _MyHomePageState extends State<MyHomePage> {
               readIso15693: true,
               readIso18092: true)
           .then(
+            //Creating a record to be written
+            NDEFRecord record = NDEFRecord(
+              //Set to this in most cases
+              type: NDEFTypeNameFormat.nfcWellKnown,
+              //Name of data entry (does not matter as long as name is consistent)
+              typeName: "data",
+              //Payload represents String to be sent across
+              payload: "Hello World!",
+            );
+    
+            FlutterNfcKit.writeNDEFRecords([record]);
         (returned) {},
       );
       setState(() {
