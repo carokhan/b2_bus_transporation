@@ -140,17 +140,17 @@ class _MyHomePageState extends State<MyHomePage> {
       try {
         await _googleSignIn.signIn().then((userData) {
           //Login Success
-          print("THEN!!! " + userData.toString());
+          print(userData.toString());
           setState(() {
             //change login button symbol
             _loginTooltip = "Logout";
             _loginIcon = Icons.logout;
           });
         }).catchError((e) {
-          print("ERROR!!!!! " + e.toString());
+          print(e.toString());
         });
       } catch (e) {
-        print("ERR!!!" + e.toString());
+        print(e.toString());
       }
     }
   }
