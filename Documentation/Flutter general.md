@@ -4,9 +4,9 @@ ex. cd /PATH TO GITHUB REPO/ClientApp   or   /PATH TO GITHUB REPO/RecipientApp/r
 
 # Important Commands
 
-flutter clean
-flutter pub get
-flutter run
+flutter clean  -clear cashed data
+flutter pub get  -pull all package files that were removed durning the clean
+flutter run  -run debug of the app
 
 # Install Flutter
 
