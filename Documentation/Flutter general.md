@@ -11,3 +11,7 @@ flutter run  -run debug of the app
 # Install Flutter
 
 https://docs.flutter.dev/get-started/install
+
+# Main.dart
+
+Main.dart is pathed to lib/main.dart in the root of the directory of each individual app
