@@ -18,6 +18,12 @@
 @import google_sign_in_ios;
 #endif
 
+#if __has_include(<nfc_in_flutter/NfcInFlutterPlugin.h>)
+#import <nfc_in_flutter/NfcInFlutterPlugin.h>
+#else
+@import nfc_in_flutter;
+#endif
+
 #if __has_include(<nfc_manager/NfcManagerPlugin.h>)
 #import <nfc_manager/NfcManagerPlugin.h>
 #else
@@ -29,6 +35,7 @@
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
   [FlutterNfcKitPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterNfcKitPlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
+  [NfcInFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"NfcInFlutterPlugin"]];
   [NfcManagerPlugin registerWithRegistrar:[registry registrarForPlugin:@"NfcManagerPlugin"]];
 }
 

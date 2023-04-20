@@ -1,6 +1,7 @@
 //import 'dart:js_util';
 
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
+//import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 
 import 'dart:async';
 
@@ -97,20 +98,13 @@ class _MyHomePageState extends State<MyHomePage> {
               readIso14443B: true,
               readIso15693: true,
               readIso18092: true)
-          .then(
-            //Creating a record to be written
-            NDEFRecord record = NDEFRecord(
-              //Set to this in most cases
-              type: NDEFTypeNameFormat.nfcWellKnown,
-              //Name of data entry (does not matter as long as name is consistent)
-              typeName: "data",
-              //Payload represents String to be sent across
-              payload: "Hello World!",
-            );
-    
-            FlutterNfcKit.writeNDEFRecords([record]);
-        (returned) {},
-      );
+          .then((tag) {
+        //Creating a record to be written
+        ndef.NDEFRecord record = ndef.NDEFRecord();
+        var a = [record];
+        FlutterNfcKit.writeNDEFRecords(a);
+        (returned) {};
+      });
       setState(() {
         //NFC Success visual
         _nfcIconDesplay = Icons.check;
